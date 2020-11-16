@@ -23,9 +23,10 @@ generateBtn.addEventListener('click', () => {
 numericButtons.forEach(button => {
     button.addEventListener('click', () =>{
         const number = button.innerText;
-        let newSubmittedPin = submitDisplay.value.toString() + number.toString();
+        const submitedValue = submitDisplay.value;
+        let newSubmittedPin = submitedValue + number;
         submitDisplay.value = newSubmittedPin;
-    } )
+    });
 });
 
 deleteButton.addEventListener('click', () =>{
