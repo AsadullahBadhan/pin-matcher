@@ -12,21 +12,54 @@ const submitDisplay = document.querySelector('[data-submit-display]');
 
 //pin generator event listener
 generateBtn.addEventListener('click', () => {
-    let newPin = getRndInteger(1000, 10000);
+    let newPin = Math.floor(Math.random() * (10000 - 1000 )) + 1000; // Math.floor(Math.random() * (max - min)) + min;
     generateDisplay.value = newPin;
+    submitDisplay.value = '';
+    rightPin.style.display = 'none';
+    wrongPin.style.display = 'none';
+    tryCount.innerText = '3';
 });
-
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min )) + min;
-}
-
-let submitDisplayValue = submitDisplay.value;
 
 numericButtons.forEach(button => {
     button.addEventListener('click', () =>{
         const number = button.innerText;
-        let newSubmittedPin = submitDisplayValue.toString() + number.toString();
-
-        submitDisplayValue = newSubmittedPin;
+        let newSubmittedPin = submitDisplay.value.toString() + number.toString();
+        submitDisplay.value = newSubmittedPin;
     } )
 });
+
+deleteButton.addEventListener('click', () =>{
+    const displayNumber = submitDisplay.value;
+    const newNumber = displayNumber.slice(0, -1);
+    submitDisplay.value = newNumber;
+});
+
+clearButton.addEventListener('click', () => {
+    submitDisplay.value = '';
+    rightPin.style.display = 'none';
+    wrongPin.style.display = 'none';
+});
+
+submitButton.addEventListener('click', () => {
+    const generateDisplayValue = generateDisplay.value;
+    const submitDisplayValue = submitDisplay.value;
+    let tryNumber = parseFloat(tryCount.innerText);
+
+    if (generateDisplayValue === submitDisplayValue) {
+        rightPin.style.display = 'block';
+        wrongPin.style.display = 'none';
+    } else {
+        wrongPin.style.display = 'block';
+        rightPin.style.display = 'none';
+        setTimeout(() => {
+            wrongPin.style.display = 'none';
+        }, 1500);
+
+        tryCount.innerText = tryNumber - 1;
+        if (tryNumber <= 1) {
+            submitButton.setAttribute('disabled','');
+        }
+        submitDisplay.value = '';
+    }
+})
+
